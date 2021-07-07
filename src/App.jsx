@@ -5,6 +5,7 @@ import NumberScroll from './components/NumberScroll'
 import { useState } from 'react';
 import Count from './components/Count';
 import IsFive from './components/IsFire';
+import Post from './components/Post';
 
 
 const App = () => {
@@ -33,6 +34,8 @@ const App = () => {
       </div>
 
     </div>
+
+    <Post/>
   </>
   );
 }
