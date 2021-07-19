@@ -7,7 +7,7 @@ import Count from './components/Count';
 import IsFive from './components/IsFire';
 import Post from './components/Post';
 import AboutMe from './components/Ex1Reflect';
-import Ex2Rflect from './components/Ex2Reflect';
+import Ex2Rflect, { PageContent } from './components/Ex2Reflect';
 import { Ex3Reflect } from './components/Ex3Reflect';
 import Ex4Reflect from './components/Ex4Relect';
 import New1 from './components/New/New1';
@@ -35,7 +35,7 @@ const App = () => {
 
 
   return (<>
-
+<PageContent />
     < ChakraProvider theme={theme}>
       <Box mt={5} mb={100}> 
         <New1 />
@@ -45,7 +45,7 @@ const App = () => {
 
       <Ex4Reflect />
       <Ex3Reflect />
-      <Ex2Rflect />
+      
       <AboutMe />
       <TodoList />
       <Counter />

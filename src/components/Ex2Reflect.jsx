@@ -1,38 +1,60 @@
-import { Box } from "@chakra-ui/react";
-import { variant } from "@effector/reflect";
-import { createEvent, createStore } from "effector";
+import { Box, Button } from "@chakra-ui/react";
+import {  variant } from "@effector/reflect";
+import axios from "axios";
+import { combine, createEffect, createStore } from "effector";
+import { useStore } from "effector-react";
 
+const getTodosAsync = createEffect()
+getTodosAsync.use(async () => {
+    const result = await axios.get(`https://jsonplaceholder.typicode.com/todos`)
+    return result.data
+})
 
-const $fieldType = createStore('string');
-const valueChanged = createEvent();
-const $value = createStore('');
+const $todos = createStore([])
+    .on(getTodosAsync.doneData, (state, todos) => [...state, ...todos])
 
-const Input = ({ value, onChange, placeholder }) => {
-    return <input value={value} onChange={onChange} placeholder={placeholder} />;
-};
-
-const DateSelector = '222'
+const $isLoading = getTodosAsync.pending
+const $isEmpty = $todos.map((t) => t.length === 0)
 
 
 const Ex2Rflect = () => {
 
-    const Field = variant({
-        source: $fieldType,
-        bind: { onChange: valueChanged, value: $value },
-        cases: {
-          date: DateSelector,
-          number: Range,
-        },
-        default: Input,
-      });
+    const todos = useStore($todos)
 
 
     return (
-        <Box bg='pink.100' p={2}>
-            <Field />
-        </Box>
+        <div>
+            <h3>Todos</h3>
+
+            {todos.map((t) => <div>{t.id}</div>)}
+
+            <Button bg='pink' p={5} onClick={() => { getTodosAsync() }}>Fetch todos</Button>
+
+        </div>
 
     );
 }
 
 export default Ex2Rflect;
+
+
+
+export const PageContent = variant({
+    source: combine(
+        {
+            isLoading: $isLoading,
+            isEmpty: $isEmpty,
+        }, ({ isLoading, isEmpty }) => {
+            if (isLoading) return "loading";
+            if (isEmpty) return "empty";
+            return "ready";
+        }
+    ),
+    cases: {
+        loading: () => <div>Loading...</div>,
+        ready: Ex2Rflect,
+    },
+    default: Ex2Rflect
+});
+
+
