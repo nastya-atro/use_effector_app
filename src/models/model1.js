@@ -13,10 +13,4 @@ export const $namee = createStore([
 
 export const $userName = restore(addName, 'nastya')
 
-//variant 3
-
-export const $userName1 = restore(addName, [
-    { id: 1, name: 'aaa' },
-    { id: 2, name: 'bbb' }])
-
 

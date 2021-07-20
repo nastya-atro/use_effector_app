@@ -1,7 +1,7 @@
 import React from "react";
 import { createReflect } from '@effector/reflect';
 import { createEvent, restore } from 'effector';
-import { Box, theme } from "@chakra-ui/react";
+import { Box, Button, theme } from "@chakra-ui/react";
 
 const changeName = createEvent()
 const $name = restore(changeName, '')
@@ -11,20 +11,22 @@ const $age = restore(changeAge, 0);
 
 const submit = createEvent();
 
-const Input = ({ value, onChange }) => {
-    return <input value={value} onChange={onChange} />;
-};
+const Input = ({ value, onChange, placeholder }) => {
+    return <input value={value} onChange={onChange} placeholder={placeholder} />;
+}
 export const reflectInput = createReflect(Input);
 
 
-const Button = ({ onClick, children, title }) => {
+const Buttonn = ({ onClick, children, title }) => {
     return (
-        <button onClick={onClick} title={title}>
-            {children}
-        </button>
+        <div>
+            <Button bg='white' p={5} onClick={onClick} title={title}>
+                {children}
+            </Button>
+        </div>
     );
 };
-export const reflectButton = createReflect(Button);
+export const reflectButton = createReflect(Buttonn);
 
 
 const Name = reflectInput({
@@ -48,13 +50,12 @@ const Ex4Reflect = () => {
     return (
         <div>
             <Box bg='red.100' p={2} >
-                <Name />
-                <Age />
+                <Name placeholder='Name' />
+                <Age placeholder='Age' />
+
                 <Submit title="Save left">Save left</Submit>
-                <div>
+
                 <Submit title="Save right">Save right</Submit>
-                </div>
-                
             </Box>
         </div>
     );

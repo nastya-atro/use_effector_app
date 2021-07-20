@@ -12,7 +12,6 @@ import { Ex3Reflect } from './components/Ex3Reflect';
 import Ex4Reflect from './components/Ex4Relect';
 import New1 from './components/New/New1';
 import { New2 } from './components/New/New2';
-import { New3 } from './components/New/New3';
 import { Box, ChakraProvider, extendTheme } from "@chakra-ui/react"
 
 
@@ -40,7 +39,6 @@ const App = () => {
       <Box mt={5} mb={100}> 
         <New1 />
         <New2 />
-        <New3 />
       </Box>
 
       <Ex4Reflect />

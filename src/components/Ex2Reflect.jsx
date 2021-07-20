@@ -18,26 +18,18 @@ const $isEmpty = $todos.map((t) => t.length === 0)
 
 
 const Ex2Rflect = () => {
-
     const todos = useStore($todos)
-
 
     return (
         <div>
             <h3>Todos</h3>
-
             {todos.map((t) => <div>{t.id}</div>)}
-
             <Button bg='pink' p={5} onClick={() => { getTodosAsync() }}>Fetch todos</Button>
-
         </div>
-
     );
 }
 
 export default Ex2Rflect;
-
-
 
 export const PageContent = variant({
     source: combine(

@@ -14,6 +14,7 @@ const New1 = () => {
 
     return (
         <Box bg='yellow.100' p={2}>
+            <h3>New1</h3>
             <form>
                 <input placeholder='Your name...' onChange={(e) => { setValue(e.target.value) }} value={value} />
 
