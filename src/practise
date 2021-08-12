@@ -1,0 +1,103 @@
+import {split, createEffect, createEvent, createStore} from 'effector'
+
+const setPending = createEvent()
+const pending = createStore('').on(setPending, (x,y)=>y)
+const setDone = createEvent()
+const done = createStore('').on(setDone, (x,y)=>y)
+
+let promise = new Promise((resolve, reject) => {
+    setTimeout(()=>{
+        const data = {
+            status: 'done'
+        }
+        resolve(data)
+    }, 1000)
+});
+
+const getResponse = createEffect(
+    async () => {
+        let result = await promise;
+        return result.status;
+    }
+)
+
+pending.watch((x)=>console.log(x))
+done.watch((x)=>console.log(x))
+// // done
+
+
+split({
+    source: getResponse.doneData,
+    match: ({status}) => (status ==='pending' ? 'pending' : 'done'),
+    cases: {
+        pending: setPending,
+        done: setDone,
+    },
+})
+
+await getResponse()
+
+////////
+
+import {createEvent, split} from 'effector'
+const message = createEvent()
+
+
+const user = split(message, {
+    kate: person=>person.name === 'Kate',
+    gjon: person=>person.name === 'Djon',
+})
+
+user.kate.watch(({age})=>console.log(age))
+user.gjon.watch(({age})=>console.log(age))
+
+const {__: guest} = user
+guest.watch(({age}) => {
+    console.log('guest ', age)
+})
+// guest  42
+
+
+message({name: 'Kate', age: 25}) // 25
+message({name: 'Viola', age: 42})
+
+
+///////////////////////////
+import {createEvent, split, createEffect, forward} from 'effector'
+
+const message = createEvent();
+const $result = createStore('');
+
+const promise = new Promise((resolve, reject)=>{
+    setTimeout(()=>{
+        const data={
+            text: 'HI!'
+        }
+        resolve(data)
+    }, 2000)
+})
+
+const effect = createEffect(async()=>{
+    const result = await promise
+//  console.log(result.text)
+    return result.text
+})
+
+forward({
+    from: effect.doneData,
+    to: $result
+})
+
+const {xs, sm, md} = split($result,{
+    xs: (text) => text.length<=10,
+    sm: (text) => text.length > 10 && text.length<=20,
+    md: (text) => text.length > 20,
+})
+
+xs.watch((text)=>console.log(text + ' xs'))
+// HI! xs
+sm.watch((text)=>console.log('sm'))
+md.watch((text)=>console.log('md'))
+
+effect()
+
